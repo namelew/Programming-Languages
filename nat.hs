@@ -16,6 +16,11 @@ integer2nat'' 2 = (Suc [(Suc [(Zero)])])
 integer2nat'' 3 = (Suc [(Suc [(Suc [(Zero)])])])
 integer2nat'' 4 = (Suc [(Suc [(Suc [(Suc [(Zero)])])])])
 
--- natAdd :: Natural Natural -> Natural
--- natSub :: Natural Natural -> Natural
--- natMul :: Natural Natural -> Natural
+natAdd :: Natural -> Natural -> Natural
+natAdd n1 n2 = integer2nat'' ((nat2integer'' n1 + nat2integer'' n2) `mod` 4)
+
+natSub :: Natural -> Natural -> Natural
+natSub n1 n2 = integer2nat'' ((nat2integer'' n1 - nat2integer'' n2) `mod` 4)
+
+natMul :: Natural -> Natural -> Natural
+natMul n1 n2 = integer2nat'' ((nat2integer'' n1 - nat2integer'' n2) `mod` 4)
