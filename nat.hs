@@ -29,7 +29,25 @@ natAdd (Suc [(Zero)]) n2 = (Suc [n2]) -- 1 + n
 natAdd n1 (Suc [(Zero)]) = (Suc [n1]) -- n + 1
 
 natSub :: Natural -> Natural -> Natural
-natSub n1 n2 = integer2nat'' ((nat2integer'' n1 - nat2integer'' n2) `mod` 4)
+natSub (Zero) n2 = n2 -- 0 - n
+natSub n1 (Zero) = n1 -- n - 0
+natSub (Suc [(Zero)]) (Suc [(Zero)]) = (Zero) -- n - n
+natSub (Suc [(Suc [(Zero)])]) (Suc [(Suc [(Zero)])]) = (Zero) -- n - n
+natSub (Suc [(Suc [(Suc [(Zero)])])]) (Suc [(Suc [(Suc [(Zero)])])]) = (Zero) -- n - n
+natSub (Suc [(Suc [(Suc [(Suc [(Zero)])])])]) (Suc [(Suc [(Suc [(Suc [(Zero)])])])]) = (Zero) -- n - n
+natSub (Suc [(Suc [(Suc [(Suc [(Zero)])])])]) (Suc [(Zero)]) = (Suc [(Suc [(Suc [(Zero)])])]) -- 4 - n
+natSub (Suc [(Suc [(Suc [(Suc [(Zero)])])])]) (Suc [(Suc [(Zero)])]) = (Suc [(Suc [(Zero)])]) -- 4 - n
+natSub (Suc [(Suc [(Suc [(Suc [(Zero)])])])]) (Suc [(Suc [(Suc [(Zero)])])]) = (Suc [(Zero)]) -- 4 - n
+natSub (Suc [(Zero)]) (Suc [(Suc [(Suc [(Suc [(Zero)])])])]) = (Suc [(Suc [(Suc [(Zero)])])]) -- n - 4
+natSub (Suc [(Suc [(Zero)])]) (Suc [(Suc [(Suc [(Suc [(Zero)])])])]) = (Suc [(Suc [(Zero)])]) -- n - 4
+natSub (Suc [(Suc [(Suc [(Zero)])])]) (Suc [(Suc [(Suc [(Suc [(Zero)])])])]) = (Suc [(Zero)]) -- n - 4
+natSub (Suc [(Zero)]) (Suc [(Suc [(Zero)])]) = (Suc [(Zero)]) -- 1 - n
+natSub (Suc [(Zero)]) (Suc [(Suc [(Suc [(Zero)])])]) = (Suc [(Suc [(Zero)])]) -- 1 - n
+natSub (Suc [(Suc [(Zero)])]) (Suc [(Zero)]) = (Suc [(Zero)]) -- n - 1
+natSub (Suc [(Suc [(Suc [(Zero)])])]) (Suc [(Zero)]) = (Suc [(Suc [(Zero)])]) -- n - 1
+natSub (Suc [(Suc [(Suc [(Zero)])])]) (Suc [(Suc [(Zero)])]) = (Suc [(Zero)]) -- 3 - 2
+natSub (Suc [(Suc [(Zero)])]) (Suc [(Suc [(Suc [(Zero)])])]) = (Suc [(Zero)]) -- 2 - 3 
 
 natMul :: Natural -> Natural -> Natural
-natMul n1 n2 = integer2nat'' ((nat2integer'' n1 - nat2integer'' n2) `mod` 4)
+natMul m (Zero) = (Zero)
+natMul m n = let m natAdd natMul m natSub n (Suc [(Zero)]) -- adicionar let e wheres
