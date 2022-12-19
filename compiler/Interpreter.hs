@@ -20,4 +20,16 @@ step (If BFalse _ e2) = Just e2
 step (If e e1 e2) = case step e of 
                       Just e' -> Just (If e' e1 e2)
                       _       -> Nothing
-step e = Just e
+step e = Just e 
+
+isvalue :: Expr -> Bool
+isvalue BTrue = True
+isvalue BFalse = True
+isvalue (Num _) = True
+isvalue _ = False
+
+eval :: Expr -> Expr
+eval e | isvalue e = e
+       | otherwise = case step e of
+                        Just e' -> eval e'
+                        _       -> error "Interpreter error!"

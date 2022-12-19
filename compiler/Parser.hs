@@ -491,6 +491,7 @@ happyFail explist (1) tk old_st _ stk@(x `HappyStk` _) =
 {-  We don't need state discarding for our restricted implementation of
     "error".  In fact, it can cause some bogus parses, so I've disabled it
     for now --SDM
+
 -- discard a state
 happyFail  ERROR_TOK tk old_st CONS(HAPPYSTATE(action),sts) 
                                                 (saved_tok `HappyStk` _ `HappyStk` stk) =

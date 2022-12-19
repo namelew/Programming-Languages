@@ -43,4 +43,4 @@ lexKW cs = case span isAlpha cs of
              ("false", rest) -> TokenFalse : lexer rest 
              ("if", rest)    -> TokenIf : lexer rest 
              ("then", rest)  -> TokenThen : lexer rest 
-             ("else", rest)  -> TokenElse : lexer rest
+             ("else", rest)  -> TokenElse : lexer rest 

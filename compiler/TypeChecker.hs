@@ -21,3 +21,7 @@ typeof (If e e1 e2) =
                                               Nothing
                       _                  -> Nothing 
       _          -> Nothing
+typecheck :: Expr -> Expr
+typecheck e = case (typeof e) of 
+                Just _ -> e
+                _      -> error "Type error"
