@@ -1,23 +1,46 @@
-module Interpreter where
+module Lexer where 
 
-import Lexer
+import Data.Char 
 
-step :: Expr -> Maybe Expr 
-step (Add (Num n1) (Num n2)) = Just (Num (n1 + n2))
-step (Add (Num n1) e2) = case step e2 of 
-                           Just e2' -> Just (Add (Num n1) e2')
-                           _        -> Nothing
-step (Add e1 e2) = case step e1 of 
-                     Just e1' -> Just (Add e1' e2)
-                     _        -> Nothing 
-step (And BTrue e2) = Just e2 
-step (And BFalse _) = Just BFalse 
-step (And e1 e2) = case step e1 of 
-                     Just e1' -> Just (And e1' e2)
-                     _        -> Nothing
-step (If BTrue e1 _) = Just e1 
-step (If BFalse _ e2) = Just e2 
-step (If e e1 e2) = case step e of 
-                      Just e' -> Just (If e' e1 e2)
-                      _       -> Nothing
-step e = Just e
+data Ty = TBool
+        | TNum
+        deriving (Show, Eq)
+
+data Expr = BTrue
+          | BFalse
+          | Num Int 
+          | Add Expr Expr 
+          | And Expr Expr 
+          | If Expr Expr Expr 
+          deriving Show 
+
+data Token = TokenTrue 
+           | TokenFalse 
+           | TokenNum Int 
+           | TokenAdd 
+           | TokenAnd
+           | TokenIf 
+           | TokenThen
+           | TokenElse 
+           deriving Show 
+
+lexer :: String -> [Token]
+lexer [] = [] 
+lexer (c:cs) | isSpace c = lexer cs 
+             | isDigit c = lexNum (c:cs)
+             | isAlpha c = lexKW (c:cs)
+lexer ('+':cs) = TokenAdd : lexer cs 
+lexer ('&':cs) = TokenAnd : lexer cs
+lexer _ = error "Lexical error: caracter inválido!"
+
+lexNum :: String -> [Token]
+lexNum cs = case span isDigit cs of 
+              (num, rest) -> TokenNum (read num) : lexer rest 
+
+lexKW :: String -> [Token]
+lexKW cs = case span isAlpha cs of 
+             ("true", rest)  -> TokenTrue : lexer rest 
+             ("false", rest) -> TokenFalse : lexer rest 
+             ("if", rest)    -> TokenIf : lexer rest 
+             ("then", rest)  -> TokenThen : lexer rest 
+             ("else", rest)  -> TokenElse : lexer rest
