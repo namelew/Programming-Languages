@@ -50,4 +50,4 @@ natSub (Suc [(Suc [(Zero)])]) (Suc [(Suc [(Suc [(Zero)])])]) = (Suc [(Zero)]) --
 
 natMul :: Natural -> Natural -> Natural
 natMul m (Zero) = (Zero)
-natMul m n = let m natAdd natMul m natSub n (Suc [(Zero)]) -- adicionar let e wheres
+natMul m n = natAdd m (natMul m (natSub n (Suc [(Zero)])))
